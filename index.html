@@ -34,7 +34,7 @@ function eventWindowLoaded() {
 }
 
 function canvasApp() {
-   var wins = 0;
+   
    var guesses = 0;
    var message = "Guess what letter I'm thinking of!!";
    var letters = [
@@ -55,8 +55,7 @@ function canvasApp() {
    function initGame() {
       var letterIndex = Math.floor(Math.random() * letters.length);
       letterToGuess = letters[letterIndex];
-      wins = 0;
-      losses = 0;
+      
       guesses = 0;
       lettersGuessed = [];
       gameOver = false;
@@ -147,7 +146,7 @@ function canvasApp() {
 
 </audio>
 	<h1>"The Psychic Game!!"</h1>
-<div style="position:absolute; top: 50px; left: 100px;">
+<div style="position:center; top: 50px; left: 100px;">
 <canvas id="canvasOne" width="800" height="300">
  
 </canvas>
