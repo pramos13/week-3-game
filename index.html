@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Psychic Game</title>
+<link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
+<link rel="stylesheet" type="text/css" href="assets/css/reset.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+<script type="text/javascript">
+
+window.addEventListener('load', eventWindowLoaded, false);
+
+var Debugger = function () { };
+Debugger.log = function (message) {
+   try {
+      console.log(message);
+   } catch (exception) {
+      return;
+   }
+}
+
+function eventWindowLoaded() {
+
+   canvasApp();
+}
+
+function canvasSupport () {
+     return Modernizr.canvas;
+}
+
+function eventWindowLoaded() {
+
+   canvasApp();
+}
+
+function canvasApp() {
+   var wins = 0;
+   var guesses = 0;
+   var message = "Guess what letter I'm thinking of!!";
+   var letters = [
+               "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
+               "p","q","r","s","t","u","v","w","x","y","z"
+               ];
+   var today = new Date();
+   var letterToGuess = "";
+   var higherOrLower = "";
+   var lettersGuessed;
+   var gameOver = false;
+
+   var theCanvas = document.getElementById("canvasOne");
+   var context = theCanvas.getContext("2d");
+
+   initGame();
+
+   function initGame() {
+      var letterIndex = Math.floor(Math.random() * letters.length);
+      letterToGuess = letters[letterIndex];
+      wins = 0;
+      losses = 0;
+      guesses = 0;
+      lettersGuessed = [];
+      gameOver = false;
+      window.addEventListener("keyup",eventKeyPressed,true);
+      var formElement = document.getElementById("createImageData");
+      formElement.addEventListener('click', createImageDataPressed, false);
+      drawScreen();
+   }
+
+   function eventKeyPressed(e) {
+      if (!gameOver) {
+         var letterPressed = String.fromCharCode(e.keyCode);
+         letterPressed = letterPressed.toLowerCase();
+         guesses++;
+         lettersGuessed.push(letterPressed);
+
+         if (letterPressed == letterToGuess) {
+            gameOver = true;
+            wins = true;
+         } else  {
+
+            letterIndex = letters.indexOf(letterToGuess);
+            guessIndex = letters.indexOf(letterPressed);
+            Debugger.log(guessIndex);
+            if (guessIndex < 0) {
+               higherOrLower = "Letters only noob!";
+            } else if (guessIndex > letterIndex) {
+               higherOrLower = "Lower";
+            } else {
+               higherOrLower = "Higher";
+            }
+
+         }
+         drawScreen();
+        }
+   }
+
+   function drawScreen() {
+      //Background
+      context.fillStyle = "#ffffaa";
+      context.fillRect(0, 0, 500, 300);
+      //Box
+      context.strokeStyle = "#000000";
+      context.strokeRect(5,  5, 490, 250);
+      context.textBaseline = "top";
+      //Date
+      context.fillStyle = "#000000";
+      context.font = "10px _sans";
+      context.fillText  (today, 150 ,10);
+      //Message
+      context.fillStyle = "#FF0000";
+      context.font = "14px _sans";
+      context.fillText  (message, 125, 30);
+      //Guesses
+      context.fillStyle = "#109910";
+      context.font = "16px _sans";
+      context.fillText  ('Guesses: ' + guesses, 215, 50);
+      //Higher Or Lower
+      context.fillStyle = "#000000";
+      context.font = "16px _sans";
+      context.fillText  ("Higher Or Lower: " + higherOrLower, 150,125);
+      //Letters Guessed
+      context.fillStyle = "#FF0000";
+      context.font = "16px _sans";
+      context.fillText  ("Letters Guessed: " + lettersGuessed.toString(), 10, 260);
+      if (gameOver) {
+         context.fillStyle = "#FF0000";
+         context.font = "40px _sans";
+         context.fillText  ("You Win!!!", 150, 180);
+      }
+   }
+
+   function createImageDataPressed(e) {
+
+      window.open(theCanvas.toDataURL(),"canvasImage"," center=0,left=0,top=0,width=" + 
+      theCanvas.width + ",height=" + theCanvas.height +",toolbar=0,resizable=0"); 
+   }
+
+}
+
+</script>
+</head>
+<body background="http://nebula.wsimg.com/c823957b752462ee12f3fea4df923772?AccessKeyId=C62144CC53548E8B0BB8&disposition=0&alloworigin=1">
+
+<audio src="http://soundbible.com/2046-Incoming-Suspense.html" autoplay>
+	<embed src="http://soundbible.com/2046-Incoming-Suspense.html" width="180" height="90" hidden="true"/>
+
+
+</audio>
+	<h1>"The Psychic Game!!"</h1>
+<div style="position:absolute; top: 50px; left: 100px;">
+<canvas id="canvasOne" width="800" height="300">
+ 
+</canvas>
+<form>
+<input type="button" id="createImageData" value="Export Canvas Image">
+</form>
+</div>
+<footer>
+		<div class="footer">
+			<p id="copyright">&copy;Copyright 2016 Phillip Ramos</p>
+		</div>
+	</footer>
+
+
+</body>
+</html>
